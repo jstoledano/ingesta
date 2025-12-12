@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Ingesta.Api/Ingesta.Api.csproj" />
+    <Project Path="src/Ingesta.Domain/Ingesta.Domain.csproj" />
+    <Project Path="src/Ingesta.Infrastructure/Ingesta.Infrastructure.csproj" />
+  </Folder>
+</Solution>
