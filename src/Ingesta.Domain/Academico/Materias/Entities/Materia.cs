@@ -1,4 +1,4 @@
-﻿using Ingesta.Domain.Academico.Materias.ValueObjects;
+using Ingesta.Domain.Academico.Materias.ValueObjects;
 
 namespace Ingesta.Domain.Academico.Materias.Entities;
 
@@ -7,7 +7,6 @@ public sealed class Materia
     // -- [[ 1. Propiedades Públicas ]] --
 
     // - Identificación de la materia
-    public Guid Id { get; private set;  }
     public CodigoMateria Codigo { get; private set; }
     public string Nombre { get; private set; }
     public string Clave { get; private set; }
@@ -58,7 +57,6 @@ public sealed class Materia
             throw new ArgumentException("El bloque solo puede ser 1 o 2");
 
         // - Identificación de la materia
-        Id = Guid.NewGuid();
         Codigo = codigo;
         Nombre = nombre;
         Clave = clave;

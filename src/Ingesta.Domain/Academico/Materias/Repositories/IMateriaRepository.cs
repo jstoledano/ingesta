@@ -1,4 +1,4 @@
-﻿using Ingesta.Domain.Academico.Materias.Entities;
+using Ingesta.Domain.Academico.Materias.Entities;
 using Ingesta.Domain.Academico.Materias.ValueObjects;
 
 namespace Ingesta.Domain.Academico.Materias.Repositories
@@ -8,10 +8,9 @@ namespace Ingesta.Domain.Academico.Materias.Repositories
         // --- Carga inicial del catálogo ---
         // Debe leer TODAS las materias desde la infraestructura
         // y reconstruir correctamente los agregados.
-        void LoadCatalog();
+        Task LoadCatalogAsync();
 
         // --- Consultas individuales ---
-        Materia? GetById(Guid id);
         Materia? GetByCodigo(CodigoMateria codigo);
 
         // --- Consultas masivas ---
