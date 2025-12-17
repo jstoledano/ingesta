@@ -10,11 +10,13 @@ public sealed class Materia
     public Guid Id { get; private set;  }
     public CodigoMateria Codigo { get; private set; }
     public string Nombre { get; private set; }
+    public string Clave { get; private set; }
     public decimal Creditos { get; private set; }
 
     // - Ubicación en el Mapa Curricular
     public int Semestre { get; private set; }
     public int Modulo { get; private set; }
+    public int Bloque { get; private set; }
 
     // - Seriación
     public CodigoMateria? Seriacion { get; private set; }
@@ -24,7 +26,9 @@ public sealed class Materia
     public Materia(
         CodigoMateria codigo,
         string nombre,
+        string clave,
         decimal creditos,
+        int bloque,
         int? semestreOficial = null,
         int? moduloOficial = null,
         CodigoMateria? seriacion = null)
@@ -39,14 +43,25 @@ public sealed class Materia
         if (nombre.Length < 10 || nombre.Length > 85)
             throw new ArgumentException("La longitud del nombre no es correcta");
 
+        // - Validaciones de clave
+        if (string.IsNullOrWhiteSpace(clave))
+            throw new ArgumentException("La clave de la materia es obligatoria");
+        if (clave.Length != 4)
+            throw new ArgumentException("La clave tiene exactamente cuatro caracteres");
+
         // - Validación de créditos
         if (creditos <= 0)
             throw new ArgumentException("Los créditos deben ser mayor que cero");
+
+        // - Validación de bloque
+        if (bloque != 1 && bloque != 2)
+            throw new ArgumentException("El bloque solo puede ser 1 o 2");
 
         // - Identificación de la materia
         Id = Guid.NewGuid();
         Codigo = codigo;
         Nombre = nombre;
+        Clave = clave;
         Creditos = creditos;
 
         // - Semestre en la malla vs Semestre en el código de la materia
