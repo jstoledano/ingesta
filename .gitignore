@@ -1,5 +1,7 @@
 # --- Python / FastAPI (Backend) ---
 
+.zed/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
