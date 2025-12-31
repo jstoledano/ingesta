@@ -3,7 +3,7 @@ from enum import IntEnum
 from typing import Annotated, Optional
 from uuid import uuid4
 
-from pydantic import UUID4, BaseModel, ConfigDict, Field, model_validator
+from pydantic import UUID4, BaseModel, ConfigDict, Field, model_validator, ValidationError
 
 
 class TaskStatus(IntEnum):
@@ -22,7 +22,7 @@ class Task(BaseModel):
         json_schema_extra={
             "example": {
                 "enrollment": "550e8400-e29b-41d4-a716-446655440000",
-                "date_due": "2026-01-30T22:59",
+                "date_due": "2026-01-30T22:59:00",
                 "title": "Identificar problemas socioeconómicos",
                 "instructions": "Subir la tarea en formato .docx",
                 "status": 1,
@@ -35,39 +35,33 @@ class Task(BaseModel):
     due_date: Annotated[datetime, Field(description="Due time for the task")]
     title: Annotated[
         str,
-        Field(
-            min_length=10,
-            max_length=100,
-            description="Task title",
-        ),
+        Field(min_length=10, max_length=100, description="Task title"),
     ]
     instructions: Annotated[
         Optional[str],
-        Field(description="Task's instructions"),
-    ] = None
+        Field(optional=None, description="Task's instructions"),
+    ]
     status: Annotated[
         TaskStatus, Field(default=TaskStatus.TODO, description="Task's current status")
     ]
     completed_at: Annotated[
-        Optional[datetime], Field(description="When the task was completed")
-    ] = None
+        Optional[datetime], Field(default=None, description="When the task was completed")
+    ]
     value: Annotated[
         Optional[int],
-        Field(description="What was the grade obtained on the assignment?"),
-    ] = None
+        Field(default=None, description="What was the grade obtained on the assignment?"),
+    ]
 
     @model_validator(mode="after")
-    def validate_task(self):
-        # If completed_at has a date, then status is TaskStatus.DONE
-        if self.completed_at:
-            self.status = TaskStatus.DONE
-
-        # If status is DONE, then completed_at is now
+    def validate_task_consistency(self):
+        # Rule 1: If is DONE, must have a completed_ad timestamp
         if self.status == TaskStatus.DONE:
-            self.completed_at = datetime.now()
+            if self.completed_at is None:
+                raise ValidationError("Task is DONE but lacks of a completed date")
 
-        # Has the task expired?
-        if self.due_date <= datetime.now():
-            raise ValueError("The task is already expired")
+        # Rule 2: If is not DONE, completed_at must be None
+        if self.status != TaskStatus.DONE:
+            if self.completed_at is not None:
+                raise ValidationError("Task is DONE but task has completed timestamp")
 
         return self
