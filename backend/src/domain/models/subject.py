@@ -74,15 +74,16 @@ class Subject(BaseModel):
     semester: Annotated[Semester, Field(description="Semestre")]
     block: Annotated[Block, Field(description="Bloque")]
     code: Annotated[
-        Optional[str],
+        str,
         Field(
             pattern=r"^1514[1-4][1-8](0[1-9]|[1-3][0-9]|4[0-6])$",
             description="Código único (ej. 15141101)",
         ),
-    ] = None
-    acronym: Annotated[
-        str, Field(pattern=r"^(D[A-Z]{3})?$", description="Acronym / Initialism")
     ]
+    acronym: Annotated[
+        Optional[str],
+        Field(pattern=r"^(D[A-Z]{3})?$", description="Acronym / Initialism")
+    ] = None
     name: Annotated[
         str,
         Field(min_length=3, max_length=100, description="Name"),
