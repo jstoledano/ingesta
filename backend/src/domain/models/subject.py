@@ -1,5 +1,6 @@
 from enum import Enum, IntEnum
 from typing import Annotated, Optional, Set
+from uuid import uuid4
 
 from pydantic import UUID4, BaseModel, ConfigDict, Field
 
@@ -59,6 +60,9 @@ class Subject(BaseModel):
         frozen=True,
         json_schema_extra={
             "example": {
+                "module": 1,
+                "semester": 2,
+                "block": 1,
                 "name": "Estructura de datos",
                 "code": "15142419",
                 "credits": 6.0,
@@ -66,7 +70,10 @@ class Subject(BaseModel):
         },
     )
 
-    id: UUID4
+    id: Annotated[
+        UUID4,
+        Field(default_factory=uuid4, description="Subject ID")
+    ]
     module: Annotated[
         Module,
         Field(description="Módulo académico"),
