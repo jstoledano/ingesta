@@ -22,11 +22,11 @@ class EnrollmentRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_period(self, period: str) -> Optional[List[Enrollment]]:
+    async def get_by_period(self, period: str) -> List[Enrollment]:
         """Retrieves a list os Subjects enrolled in a given period."""
         pass
 
     @abstractmethod
-    async def get_by_status(self, status: int) -> Optional[List[Enrollment]]:
+    async def get_by_status(self, status: int) -> List[Enrollment]:
         """Retrieves a list os Subjects enrolled in a given status."""
         pass
