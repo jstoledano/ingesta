@@ -13,18 +13,18 @@ class Module(IntEnum):
 
     @property
     def display_name(self) -> str:
-        # Usamos match contra el valor actual (self)
+        # We use match against the current value (self)
         match self:
             case 1:
-                return "Formación Básica"
+                return "Basic Education"
             case 2:
-                return "Formación Disciplinar"
+                return "Disciplinary Education"
             case 3:
-                return "Formación Disciplinar"
+                return "Disciplinary Education"
             case 4:
-                return "Formación Profesional"
+                return "Professional Education"
             case _:
-                return "Desconocido"
+                return "Unknown"
 
 
 class Semester(IntEnum):
@@ -52,8 +52,8 @@ class Credits(float, Enum):
 
 class Subject(BaseModel):
     """
-    Representa una Asignatura en el plan de estudios.
-    Policy: Inmutable una vez instanciada.
+    Represents a Subject in the curriculum.
+    Policy: Immutable once instantiated.
     """
 
     model_config = ConfigDict(
@@ -63,7 +63,7 @@ class Subject(BaseModel):
                 "module": 1,
                 "semester": 2,
                 "block": 1,
-                "name": "Estructura de datos",
+                "name": "Data Structures",
                 "code": "15142419",
                 "credits": 6.0,
             }
@@ -76,15 +76,15 @@ class Subject(BaseModel):
     ]
     module: Annotated[
         Module,
-        Field(description="Módulo académico"),
+        Field(description="Academic module"),
     ]
-    semester: Annotated[Semester, Field(description="Semestre")]
-    block: Annotated[Block, Field(description="Bloque")]
+    semester: Annotated[Semester, Field(description="Semester")]
+    block: Annotated[Block, Field(description="Block")]
     code: Annotated[
         str,
         Field(
             pattern=r"^1514[1-4][1-8](0[1-9]|[1-3][0-9]|4[0-6])$",
-            description="Código único (ej. 15141101)",
+            description="Unique code (e.g. 15141101)",
         ),
     ]
     acronym: Annotated[
@@ -97,5 +97,5 @@ class Subject(BaseModel):
     ]
     credits: Annotated[Credits, Field(description="Credits")]
     prerequisites: Set[UUID4] = Field(
-        default_factory=set, description="IDs de materias seriadas"
+        default_factory=set, description="Prerequisite subject IDs"
     )
