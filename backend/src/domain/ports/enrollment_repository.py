@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional, List
 from uuid import UUID
 
-from domain.models.enrollment import Enrollment
+from domain.models.enrollment import Enrollment, EnrollmentStatus
 
 
 class EnrollmentRepository(ABC):
@@ -12,7 +12,7 @@ class EnrollmentRepository(ABC):
     """
 
     @abstractmethod
-    async def save(self, enroll: Enrollment) -> Enrollment:
+    async def save(self, enroll: Enrollment) -> None:
         """Persist a new enrollment update a new one."""
         pass
 
@@ -27,6 +27,6 @@ class EnrollmentRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_status(self, status: int) -> List[Enrollment]:
+    async def get_by_status(self, status: EnrollmentStatus) -> List[Enrollment]:
         """Retrieves a list os Subjects enrolled in a given status."""
         pass

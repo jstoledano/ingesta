@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from typing import Optional, List
 from uuid import UUID
 
-from domain.models.enrollment import Enrollment
 from domain.models.task import Task
 
 
@@ -12,7 +11,7 @@ class TaskRepository(ABC):
     """
 
     @abstractmethod
-    async def save(self, task: Task) -> Task:
+    async def save(self, task: Task) -> None:
         """Saves the task repository."""
         pass
 
@@ -22,7 +21,7 @@ class TaskRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_enrollment(self, enroll: Enrollment) -> List[Task]:
+    async def get_by_enrollment(self, enrollment_id: UUID) -> List[Task]:
         """Retrieves all task for an enrollment subject."""
         pass
 

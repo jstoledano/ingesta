@@ -7,7 +7,7 @@ from pydantic import UUID4, BaseModel, ConfigDict, Field, model_validator
 MIN_PASSING_GRADE = 60
 
 
-class Status(IntEnum):
+class EnrollmentStatus(IntEnum):
     ACTIVE = 1
     DROPPED = 2
     COMPLETED = 3
@@ -99,9 +99,9 @@ class Enrollment(BaseModel):
         ),
     ] = None
     status: Annotated[
-        Status,
+        EnrollmentStatus,
         Field(
-            default=Status.ACTIVE,
+            default=EnrollmentStatus.ACTIVE,
             description="The status of the enrollment",
         ),
     ]
@@ -113,17 +113,17 @@ class Enrollment(BaseModel):
     @model_validator(mode="after")
     def validate_status_and_result(self):
         # ACTIVE → no result
-        if self.status == Status.ACTIVE:
+        if self.status == EnrollmentStatus.ACTIVE:
             if self.result is not None:
                 raise ValueError("ACTIVE enrollment cannot have a result")
 
         # DROPPED → no result
-        if self.status == Status.DROPPED:
+        if self.status == EnrollmentStatus.DROPPED:
             if self.result is not None:
                 raise ValueError("DROPPED enrollment cannot have a result")
 
         # COMPLETED → result >= MIN_PASSING_GRADE
-        if self.status == Status.COMPLETED:
+        if self.status == EnrollmentStatus.COMPLETED:
             if self.result is None:
                 raise ValueError("COMPLETED enrollment must have a result")
             if self.result < MIN_PASSING_GRADE:
@@ -132,7 +132,7 @@ class Enrollment(BaseModel):
                 )
 
         # FAILED → result < MIN_PASSING_GRADE
-        if self.status == Status.FAILED:
+        if self.status == EnrollmentStatus.FAILED:
             if self.result is None:
                 raise ValueError("FAILED enrollment must have a result")
             if self.result >= MIN_PASSING_GRADE:
