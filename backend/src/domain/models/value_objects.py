@@ -27,10 +27,6 @@ class SubjectCode:
         # Validation Logic implies "Design by Contract"
         # If the string doesn't match the regex pattern -> Raise DomainException
         # If semester is out of bounds -> Raise DomainException
-        if self.value == "":
-            raise InvalidSubjectCodeError
-        if len(self.value) != 8:
-            raise InvalidSubjectCodeError
         if not SUBJECT_CODE_PATTERN.match(self.value):
             raise InvalidSubjectCodeError
 
