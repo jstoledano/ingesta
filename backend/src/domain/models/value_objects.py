@@ -25,6 +25,8 @@ class SubjectCode:
         # If semester is out of bounds -> Raise DomainException
         if self.value == "":
             raise InvalidSubjectCodeError
+        if len(self.value) != 8:
+            raise InvalidSubjectCodeError
 
 
     def __str__(self) -> str:
