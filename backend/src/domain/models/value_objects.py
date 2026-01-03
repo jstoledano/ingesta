@@ -1,6 +1,18 @@
 from dataclasses import dataclass
 
 
+class InvalidSubjectCodeError(ValueError):
+    """
+    Raised when a SubjectCode cannot be created due to domain rule violations.
+
+    Examples:
+        - Input is None or Empty.
+        - Input format is not 8 digits (e.g., "123").
+        - Input contains non-numeric characters (e.g., "1514110A").
+    """
+    pass
+
+
 @dataclass(frozen=True)
 class SubjectCode:
     value: str
@@ -11,7 +23,9 @@ class SubjectCode:
         # Validation Logic implies "Design by Contract"
         # If the string doesn't match the regex pattern -> Raise DomainException
         # If semester is out of bounds -> Raise DomainException
-        pass
+        if self.value == "":
+            raise InvalidSubjectCodeError
+
 
     def __str__(self) -> str:
         # Return canonical string representation
