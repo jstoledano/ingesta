@@ -1,0 +1,12 @@
+[tool.pytest.ini_options]
+# 1. This is the magic line. It adds 'src' to sys.path
+pythonpath = "src"
+
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+# 2. --import-mode=importlib is good, but strictly speaking
+# 'prepend' is the default and works best with pythonpath setting.
+# stick with importlib if you prefer, but 'pythonpath' above is the key.
+addopts = "-v"
