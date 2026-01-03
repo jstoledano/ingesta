@@ -1,4 +1,8 @@
 from dataclasses import dataclass
+import re
+
+
+SUBJECT_CODE_PATTERN = re.compile(r"^1514[1-4][1-8](0[1-9]|[1-3][0-9]|4[0-6])$")
 
 
 class InvalidSubjectCodeError(ValueError):
@@ -27,7 +31,8 @@ class SubjectCode:
             raise InvalidSubjectCodeError
         if len(self.value) != 8:
             raise InvalidSubjectCodeError
-
+        if not SUBJECT_CODE_PATTERN.match(self.value):
+            raise InvalidSubjectCodeError
 
     def __str__(self) -> str:
         # Return canonical string representation
